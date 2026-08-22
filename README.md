@@ -52,4 +52,4 @@ AzureProxy/
 
 ## 许可与致谢
 
-上游 [Velocity](https://github.com/PaperMC/Velocity) 基于 MIT 许可，本项目同样以 MIT 发布（见 `build/velocity-src/LICENSE`）。致谢 PaperMC/Velocity 团队（Tux 等）及其贡献者。
+上游 [Velocity](https://github.com/PaperMC/Velocity) 以 **GPLv3** 发布，本项目同样以 **GPLv3** 发布（见 [LICENSE](LICENSE) 与 [NOTICE](NOTICE.md)）——与兄弟项目 AzureBranches（Folia 下游，同样 GPLv3）许可证一致。致谢 PaperMC/Velocity 团队（Tux 等）及其贡献者。
