@@ -4,6 +4,7 @@ build/
 .gradle.zip
 *.class
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 
 # IDE
 .idea/
