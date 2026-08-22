@@ -95,7 +95,11 @@ tasks.register("buildVelocity") {
     doLast {
         // AzureProxy 品牌：启动横幅 (Booting up <name> <version>...) 读取 Jar Manifest 的
         // Implementation-Title/Vendor（VelocityServer.getVersion）。
+        // 先还原构建文件（transformSource 非幂等，克隆会累积上次品牌修改）。
         val proxyBuild = File(velocityDir, "proxy/build.gradle.kts")
+        check(sh(dir = velocityDir, cmd = arrayOf("git", "checkout", "--", "proxy/build.gradle.kts")) == 0) {
+            "git checkout proxy/build.gradle.kts failed"
+        }
         transformSource(proxyBuild, "proxy/build.gradle.kts (brand title)",
             "attributes[\"Implementation-Title\"] = \"Velocity\"",
             "attributes[\"Implementation-Title\"] = \"AzureProxy\"")

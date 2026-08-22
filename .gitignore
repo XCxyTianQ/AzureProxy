@@ -24,3 +24,8 @@ Thumbs.db
 # Proxy smoke runs
 smoke-run/
 
+
+# E2E test runs
+proxyrun-test/
+mcclient.log
+
