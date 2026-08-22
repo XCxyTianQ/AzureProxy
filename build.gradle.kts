@@ -1,6 +1,6 @@
-# AzureProxy build driver
-# 上游 Velocity 固定在 build/velocity-src（与 AzureBranches 的 folia-src 同构）。
-# 仓库本身只持有：构建驱动 + azurepatches-src/new + 文档。上游漂移时显式 re-baseline。
+// AzureProxy build driver
+// 上游 Velocity 固定在 build/velocity-src（与 AzureBranches 的 folia-src 同构）。
+// 仓库本身只持有：构建驱动 + azurepatches-src/new + 文档。上游漂移时显式 re-baseline。
 import java.io.File
 
 val velocityRepo = "https://github.com/PaperMC/Velocity.git"
@@ -49,7 +49,7 @@ tasks.register("cloneVelocity") {
             p.inputStream.transferTo(out); p.waitFor()
             val head = out.toString().trim()
             check(head == velocityRef) {
-                "velocity-src HEAD=$head != pinned $velocityRef — 请按 README "版本同步" 执行 re-baseline"
+                "velocity-src HEAD=$head != pinned $velocityRef — 请按 README「版本同步」执行 re-baseline"
             }
             println("Velocity clone cached at pinned ref $velocityRef")
             return@doLast
