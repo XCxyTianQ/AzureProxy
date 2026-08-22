@@ -69,20 +69,20 @@ tasks.register("applyAzurePatches") {
     doLast {
         val overrideSrc = file("azurepatches-src")
         if (overrideSrc.exists() && overrideSrc.isDirectory) {
-            // fail-fast：overlay 文件必须有对应上游文件
-            overrideSrc.walkTopDown().filter { it.isFile }.forEach { f ->
+            // fail-fast：overlay 文件必须有对应上游文件（约定文档 README.md 除外）
+            overrideSrc.walkTopDown().filter { it.isFile && it.name != "README.md" }.forEach { f ->
                 check(File(velocityDir, f.relativeTo(overrideSrc).path).exists()) {
                     "azurepatches-src overlay 无对应上游文件: ${f.relativeTo(overrideSrc).path}"
                 }
             }
-            overrideSrc.walkTopDown().filter { it.isFile }.forEach { f ->
+            overrideSrc.walkTopDown().filter { it.isFile && it.name != "README.md" }.forEach { f ->
                 f.copyTo(File(velocityDir, f.relativeTo(overrideSrc).path), overwrite = true)
             }
             println("  Overlaid azurepatches-src/**")
         }
         val newSrc = file("azurepatches-new")
         if (newSrc.exists() && newSrc.isDirectory) {
-            newSrc.walkTopDown().filter { it.isFile }.forEach { f ->
+            newSrc.walkTopDown().filter { it.isFile && it.name != "README.md" }.forEach { f ->
                 f.copyTo(File(velocityDir, f.relativeTo(newSrc).path), overwrite = true)
             }
             println("  Added azurepatches-new/**")
