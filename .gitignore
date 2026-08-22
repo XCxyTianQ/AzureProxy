@@ -1,0 +1,21 @@
+# Build
+build/
+.gradle/
+.gradle.zip
+*.class
+*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Velocity generated
+velocity-src/build/
+
+# AzureProxy build logs
+azureproxy-*.log
+
+# OS
+.DS_Store
+Thumbs.db
