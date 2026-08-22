@@ -50,17 +50,17 @@ public final class AzureProxyMode {
         advanced.set("log-command-executions", true);
 
         if (mode == Mode.EXP) {
-            // keep the proxy command tree out of the backend's client command surface
-            advanced.set("announce-proxy-commands", false);
-            // EXP7 pairing: modern forwarding with the backend-side velocity-support
+            // EXP7 pairing: modern forwarding with the backend-side velocity-support.
+            // announce-proxy-commands stays/in is forced to true so the client command tree
+            // keeps /server tab-completion (it must never be disabled for EXP backends).
+            advanced.set("announce-proxy-commands", true);
             if (root.get("player-info-forwarding-mode") == null) {
                 root.set("player-info-forwarding-mode", "MODERN");
                 System.out.println("[AzureProxy] azureproxy.mode=EXP: forced player-info-forwarding-mode=MODERN");
             }
-            // NOTE: announce-proxy-commands stays at its upstream default (true) so the
-            // client command tree keeps /server tab-completion (an override broke it).
             System.out.println(
-                "[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true)");
+                "[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true,"
+                    + " announce-proxy-commands=" + advanced.get("announce-proxy-commands") + ")");
         } else {
             System.out.println("[AzureProxy] azureproxy.mode=ACCESS applied (log-command-executions=true)");
         }
