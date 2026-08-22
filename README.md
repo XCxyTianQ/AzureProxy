@@ -39,6 +39,26 @@ AzureProxy 是 [PaperMC/Velocity](https://github.com/PaperMC/Velocity) 的下游
 4. `applyAzurePatches` 的 fail-fast 会指出失效的 overlay 锚点，逐项修复；
 5. `buildAzureProxyJar` 全绿后提交（同时记录对应 commit 号到 README）。
 
+## EXP 模式配置化（azureproxy.mode）
+
+呼应 AzureBranches 的 `command_blocks.mode` 三档概念，代理侧提供单一切换：
+
+```toml
+[azureproxy]
+mode = "SAFE"        # SAFE（默认）| ACCESS | EXP
+```
+
+| 档位 | 行为 |
+|---|---|
+| **SAFE** | 严格上游默认，零改动（缺省值） |
+| **ACCESS** | 运维观察：`log-command-executions = true` |
+| **EXP** | AzureBranches EXP7 配套：观察项 + `announce-proxy-commands = false`（代理命令树不注入后端命令面）；若未显式配置转发模式则强制 `MODERN`（沿用上游 forwarding-secret 生效校验） |
+
+实现：
+- `azurepatches-new/.../com/azureproxy/config/AzureProxyMode.java` —— 档位枚举与预设应用（在 nightconfig 绑定**之前**改写原始配置，预设经上游构造器自然生效）；
+- `azurepatches-src/.../VelocityConfiguration.java` —— 覆盖层：在 `read()` 的 `PacketLimiterConfig` 绑定后插入 `AzureProxyMode.applyToConfig(...)`（mod 源码由 `gen-velocity-config-overlay.py` 生成）；
+- 启动确认行：`[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true, announce-proxy-commands=false)`。
+
 ## 目录结构
 
 ```
