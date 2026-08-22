@@ -9,6 +9,12 @@ AzureProxy 是 [PaperMC/Velocity](https://github.com/PaperMC/Velocity) 的下游
 
 项目仓库本身只持有**构建驱动 + 补丁 + 文档**；上游源码在构建时按固定 ref 克隆到 `build/velocity-src/`（与 AzureBranches 的 `folia-server/build/folia-src/` 同构），因此上游演进不会污染 AzureProxy 自身的历史。
 
+## 发布记录
+
+| 版本 | 日期 | 内容 |
+|---|---|---|
+| **v26.1.2-AP-0001** | 2026-08-23 | 首个 release：v1 构建管线（pin `4772ca3` / Gradle 9.4.1 / shadowJar 改名）· SAFE/ACCESS/EXP 三档预设 · **T1** 命令树注入修复（EXP 强制 `announce-proxy-commands=true`，客户端 `/server` tab 补全）· 26.1.2 协议对齐（upstream 26_1 表实测确认）· 服务器切换 / fallback 课题实测 · 技术文档 [TECHNICAL.md](TECHNICAL.md) + Word 报告 AzureProxy-26.1.2-0001 （26.2/776 暂缓） |
+
 ### 当前适配内容（v1 构建管线）
 
 - **版本同步**：`build.gradle.kts` 顶部 `velocityRef` 固定上游 ref；`cloneVelocity` 对已存在的克隆做 HEAD 校验（漂移即构建失败）；提升上游时按 README「版本同步」流程显式 re-baseline。
