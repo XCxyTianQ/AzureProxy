@@ -59,6 +59,19 @@ mode = "SAFE"        # SAFE（默认）| ACCESS | EXP
 - `azurepatches-src/.../VelocityConfiguration.java` —— 覆盖层：在 `read()` 的 `PacketLimiterConfig` 绑定后插入 `AzureProxyMode.applyToConfig(...)`（mod 源码由 `gen-velocity-config-overlay.py` 生成）；
 - 启动确认行：`[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true, announce-proxy-commands=false)`。
 
+## 服务器切换课题（已验证）
+
+双后端切换（Velocity 核心功能）在 AzureProxy 上完整实测：
+
+| 验证项 | 结果 |
+|---|---|
+| `/server arena` 切换 | ✅ 世界差异可辨（不同 seed/地形/出生点） |
+| `/server exp7` 切回 | ✅ |
+| 世界隔离 | ✅ `/say` 只在本世界广播 |
+| 转发身份一致性 | ✅ 跨后端同一 UUID（2b47bbd5-…，现代转发） |
+| Op 独立性 | ✅ 每后端各自 ops.json（Velocity 语义） |
+| 红色/无补全 | ⏳ 子课题 **T1**：26.1 AvailableCommands 代理命令树注入未生效（velocity 4.0.0-dev 对 26.1 brigade 解析/注入差异；不影响命令执行，已确证客户端流无代理命令字节） |
+
 ## 目录结构
 
 ```
