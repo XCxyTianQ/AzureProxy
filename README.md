@@ -52,12 +52,12 @@ mode = "SAFE"        # SAFE（默认）| ACCESS | EXP
 |---|---|
 | **SAFE** | 严格上游默认，零改动（缺省值） |
 | **ACCESS** | 运维观察：`log-command-executions = true` |
-| **EXP** | AzureBranches EXP7 配套：观察项（`log-command-executions = true`）；若未显式配置转发模式则强制 `MODERN`（沿用上游 forwarding-secret 生效校验）。`announce-proxy-commands` 保持上游默认 `true`（保证客户端命令树中 `/server` 可 tab 补全） |
+| **EXP** | AzureBranches EXP7 配套：观察项（`log-command-executions = true`）；**强制** `announce-proxy-commands = true`（T1 修复：客户端命令树中 `/server` 必须可 tab 补全，绝不能为 false，见 [TECHNICAL.md](TECHNICAL.md) §7.1）；若未显式配置转发模式则强制 `MODERN`（沿用上游 forwarding-secret 生效校验）。 |
 
 实现：
 - `azurepatches-new/.../com/azureproxy/config/AzureProxyMode.java` —— 档位枚举与预设应用（在 nightconfig 绑定**之前**改写原始配置，预设经上游构造器自然生效）；
 - `azurepatches-src/.../VelocityConfiguration.java` —— 覆盖层：在 `read()` 的 `PacketLimiterConfig` 绑定后插入 `AzureProxyMode.applyToConfig(...)`（mod 源码由 `gen-velocity-config-overlay.py` 生成）；
-- 启动确认行：`[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true, announce-proxy-commands=false)`。
+- 启动确认行：`[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true, announce-proxy-commands=true)`。
 
 ## 服务器切换课题（已验证）
 
@@ -77,6 +77,7 @@ mode = "SAFE"        # SAFE（默认）| ACCESS | EXP
 ```
 AzureProxy/
 ├── build.gradle.kts        # 构建驱动（pin ref / 补丁应用 / 品牌 / 打包）
+├── TECHNICAL.md            # 技术文档（原理向：构建/补丁/mode 预设/协议适配/验证矩阵）
 ├── azurepatches-src/       # 整文件覆盖层（必须有对应上游文件，fail-fast）
 ├── azurepatches-new/       # 新增文件（无对应上游文件）
 ├── build/velocity-src/     # 上游 Velocity 克隆（gitignored，按 ref 固定）
