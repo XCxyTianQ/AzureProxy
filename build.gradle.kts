@@ -55,11 +55,11 @@ tasks.register("cloneVelocity") {
             return@doLast
         }
         velocityDir.parentFile.mkdirs()
-        check(sh(cmd = *arrayOf("git", "init", velocityDir.absolutePath)) == 0) { "git init failed" }
-        check(sh(dir = velocityDir, cmd = *arrayOf("git", "remote", "add", "origin", velocityRepo)) == 0) { "remote add failed" }
-        check(sh(dir = velocityDir, cmd = *arrayOf("git", "fetch", "--depth", "1", "origin", velocityRef)) == 0) { "git fetch failed" }
-        check(sh(dir = velocityDir, cmd = *arrayOf("git", "checkout", "--detach", "FETCH_HEAD")) == 0) { "git checkout failed" }
-        check(sh(dir = velocityDir, cmd = *arrayOf("git", "rev-parse", "HEAD")) == 0) { "rev-parse failed" }
+        check(sh(cmd = arrayOf("git", "init", velocityDir.absolutePath)) == 0) { "git init failed" }
+        check(sh(dir = velocityDir, cmd = arrayOf("git", "remote", "add", "origin", velocityRepo)) == 0) { "remote add failed" }
+        check(sh(dir = velocityDir, cmd = arrayOf("git", "fetch", "--depth", "1", "origin", velocityRef)) == 0) { "git fetch failed" }
+        check(sh(dir = velocityDir, cmd = arrayOf("git", "checkout", "--detach", "FETCH_HEAD")) == 0) { "git checkout failed" }
+        check(sh(dir = velocityDir, cmd = arrayOf("git", "rev-parse", "HEAD")) == 0) { "rev-parse failed" }
         println("Velocity cloned at pinned ref $velocityRef")
     }
 }
@@ -106,7 +106,7 @@ tasks.register("buildVelocity") {
         ensureWrapperPinned()
 
         val g = gw(velocityDir)
-        check(sh(dir = velocityDir, cmd = *arrayOf(g, ":velocity-proxy:compileJava", "--no-configuration-cache")) == 0) {
+        check(sh(dir = velocityDir, cmd = arrayOf(g, ":velocity-proxy:compileJava", "--no-configuration-cache")) == 0) {
             "velocity compile failed"
         }
         println("AzureProxy build ok (Velocity ref=$velocityRef, Gradle 9.4.1)")
@@ -117,7 +117,7 @@ tasks.register("buildAzureProxyJar") {
     dependsOn("buildVelocity")
     doLast {
         val g = gw(velocityDir)
-        check(sh(dir = velocityDir, cmd = *arrayOf(g, ":velocity-proxy:shadowJar", "--no-configuration-cache")) == 0) {
+        check(sh(dir = velocityDir, cmd = arrayOf(g, ":velocity-proxy:shadowJar", "--no-configuration-cache")) == 0) {
             "shadowJar failed"
         }
         val libs = File(velocityDir, "proxy/build/libs")
@@ -131,4 +131,4 @@ tasks.register("buildAzureProxyJar") {
     }
 }
 
-tasks.build { dependsOn("buildAzureProxyJar") }
+tasks.register("build") { dependsOn("buildAzureProxyJar") }

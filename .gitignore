@@ -20,3 +20,7 @@ azureproxy-*.log
 # OS
 .DS_Store
 Thumbs.db
+
+# Proxy smoke runs
+smoke-run/
+
