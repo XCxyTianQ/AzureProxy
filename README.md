@@ -1,6 +1,6 @@
 # AzureProxy
 
-> 与 [AzureBranches](https://github.com/XCxyTianQ/AzureBranches) 并列的 PaperMC Velocity 下游实验项目（同属 AzureCore），配套 EXP7（b_linear_v4 存储引擎）的代理侧同步适配。
+> 与 [AzureBranches](https://github.com/XCxyTianQ/AzureBranches) 并列的 [PaperMC Velocity](https://github.com/PaperMC/Velocity) 下游实验项目（同属 AzureCore），配套 EXP7（b_linear_v4 存储引擎）的代理侧同步适配。仓库：[XCxyTianQ/AzureProxy](https://github.com/XCxyTianQ/AzureProxy)
 
 ## 关于本项目
 
