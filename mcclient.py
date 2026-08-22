@@ -36,6 +36,7 @@ class Conn:
     def __init__(self):
         self.s = socket.create_connection((HOST, PORT), timeout=8)
         self.compression = None
+        self.raw = bytearray()
 
     def send_frame(self, packet_id, payload):
         if self.compression is None:
@@ -76,6 +77,7 @@ class Conn:
     def recv_packet(self):
         plen = self.read_varint()
         data = self.read_exact(plen)
+        self.raw += data
         if self.compression is not None:
             dlen = 0
             shift = 0
@@ -189,8 +191,23 @@ try:
                 facts['packs_sent'] = True
                 print('[CONFIG] sent SelectKnownPacks (empty)')
         else:  # PLAY
+            facts.setdefault('seen', {})
+            facts['seen'][pid] = facts['seen'].get(pid, 0) + 1
             if not facts.get('tr'):
                 print('[PLAY] pid=0x%02x len=%d' % (pid, len(payload)))
+            # channel scan: any packet containing the marker bytes
+            if facts.get('sent') and b'EXP7-PROXY-E2E' in payload:
+                print('[CHANNEL] pid=0x%02x len=%d CONTAINS MARKER' % (pid, len(payload)))
+                facts['marker_pid'] = pid
+            # 26.1 (1.21.9+): player-loaded + client-tick-end keep the player "in world"
+            if not facts.get('loaded'):
+                c.send_frame(0x2C, b'')  # ServerboundPlayerLoaded
+                facts['loaded'] = True
+                print('[PLAY] sent PlayerLoaded')
+            now = time.time()
+            if now - facts.get('last_tick', 0) > 0.2:
+                c.send_frame(0x0D, b'')  # ServerboundClientTickEnd
+                facts['last_tick'] = now
             if not facts.get('sent') and facts.get('play'):
                 if not command_sent:
                     ts = int(time.time() * 1000)
@@ -231,4 +248,11 @@ finally:
     c.close()
 
 print('VERDICT: play=%s command=%s echo=%s' % (play_seen, command_sent, echo_found))
+if 'seen' in facts:
+    print('pid histogram (top 20):')
+    for pid, cnt in sorted(facts['seen'].items(), key=lambda kv: -kv[1])[:20]:
+        print('  0x%02x x%d' % (pid, cnt))
+with open('raw-dump.bin', 'wb') as f:
+    f.write(bytes(c.raw))
+print('raw dump: %d bytes' % len(c.raw))
 sys.exit(0 if (play_seen and command_sent and echo_found) else 1)
