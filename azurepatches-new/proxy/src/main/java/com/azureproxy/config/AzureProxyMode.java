@@ -57,9 +57,10 @@ public final class AzureProxyMode {
                 root.set("player-info-forwarding-mode", "MODERN");
                 System.out.println("[AzureProxy] azureproxy.mode=EXP: forced player-info-forwarding-mode=MODERN");
             }
+            // NOTE: announce-proxy-commands stays at its upstream default (true) so the
+            // client command tree keeps /server tab-completion (an override broke it).
             System.out.println(
-                "[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true,"
-                    + " announce-proxy-commands=false)");
+                "[AzureProxy] azureproxy.mode=EXP applied (log-command-executions=true)");
         } else {
             System.out.println("[AzureProxy] azureproxy.mode=ACCESS applied (log-command-executions=true)");
         }

@@ -52,7 +52,7 @@ mode = "SAFE"        # SAFE（默认）| ACCESS | EXP
 |---|---|
 | **SAFE** | 严格上游默认，零改动（缺省值） |
 | **ACCESS** | 运维观察：`log-command-executions = true` |
-| **EXP** | AzureBranches EXP7 配套：观察项 + `announce-proxy-commands = false`（代理命令树不注入后端命令面）；若未显式配置转发模式则强制 `MODERN`（沿用上游 forwarding-secret 生效校验） |
+| **EXP** | AzureBranches EXP7 配套：观察项（`log-command-executions = true`）；若未显式配置转发模式则强制 `MODERN`（沿用上游 forwarding-secret 生效校验）。`announce-proxy-commands` 保持上游默认 `true`（保证客户端命令树中 `/server` 可 tab 补全） |
 
 实现：
 - `azurepatches-new/.../com/azureproxy/config/AzureProxyMode.java` —— 档位枚举与预设应用（在 nightconfig 绑定**之前**改写原始配置，预设经上游构造器自然生效）；
