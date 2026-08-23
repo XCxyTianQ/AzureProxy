@@ -1,6 +1,8 @@
 # AzureProxy
 
 > 与 [AzureBranches](https://github.com/XCxyTianQ/AzureBranches) 并列的 [PaperMC Velocity](https://github.com/PaperMC/Velocity) 下游实验项目（同属 AzureCore），配套 EXP7（b_linear_v4 存储引擎）的代理侧同步适配。仓库：[XCxyTianQ/AzureProxy](https://github.com/XCxyTianQ/AzureProxy)
+>
+> 📖 **配置手册（简单版）**：[CONFIG-GUIDE.md](CONFIG-GUIDE.md) —— AzureProxy + AzureBranches 从零搭建（端口/secret/三档 mode/常见问题）
 
 ## 关于本项目
 
@@ -84,6 +86,7 @@ mode = "SAFE"        # SAFE（默认）| ACCESS | EXP
 AzureProxy/
 ├── build.gradle.kts        # 构建驱动（pin ref / 补丁应用 / 品牌 / 打包）
 ├── TECHNICAL.md            # 技术文档（原理向：构建/补丁/mode 预设/协议适配/验证矩阵）
+├── CONFIG-GUIDE.md         # 配置手册（简单版：双端从零搭建 + 常见问题）
 ├── azurepatches-src/       # 整文件覆盖层（必须有对应上游文件，fail-fast）
 ├── azurepatches-new/       # 新增文件（无对应上游文件）
 ├── build/velocity-src/     # 上游 Velocity 克隆（gitignored，按 ref 固定）
